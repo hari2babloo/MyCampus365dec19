@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
+    tools:context=".Dashpage">
+
+    <GridLayout
+        android:id="@+id/GridLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:columnCount="2"
+        android:scrollbars="vertical"
+        android:rowCount="14"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Welcome User"
+            android:id="@+id/textView"
+            android:layout_row="0"
+            android:layout_column="0" />
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/calend"
+            android:text="Attendance"
+
+
+            android:textColor="#ffffff"
+            android:id="@+id/atendance"
+            android:paddingTop="80dp"
+            android:drawablePadding="-15sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="-5dp"
+            android:layout_row="1"
+            android:layout_column="0" />
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/directory"
+            android:text="Planner"
+
+            android:textColor="#FFFFFF"
+            android:id="@+id/planner"
+            android:paddingTop="80dp"
+            android:drawablePadding="-15sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="-5dp"
+            android:layout_row="1"
+            android:layout_column="1" />
+
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/calend"
+            android:text="Teacher"
+
+            android:textColor="#FFFFFF"
+            android:id="@+id/teacher"
+            android:paddingTop="80dp"
+            android:drawablePadding="-15sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="-5dp"
+            android:layout_row="7"
+            android:layout_column="0"/>
+
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/directory"
+            android:text="Library"
+
+            android:textColor="#FFFFFF"
+            android:id="@+id/library"
+            android:paddingTop="80dp"
+            android:drawablePadding="-15sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="-5dp"
+            android:layout_row="7"
+            android:layout_column="1" />
+
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/reports"
+            android:text="Users"
+
+            android:textColor="#FFFFFF"
+            android:id="@+id/users"
+            android:paddingTop="80dp"
+            android:drawablePadding="-15sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="-5dp"
+            android:layout_row="8"
+            android:layout_column="0" />
+
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/calend"
+            android:text="Courses"
+
+            android:textColor="#FFFFFF"
+            android:id="@+id/courses"
+            android:paddingTop="80dp"
+            android:drawablePadding="-15sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="-5dp"
+            android:layout_row="8"
+            android:layout_column="1"/>
+
+    </GridLayout>
+</ScrollView>
