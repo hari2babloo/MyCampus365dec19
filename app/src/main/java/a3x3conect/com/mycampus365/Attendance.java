@@ -1,6 +1,7 @@
 package a3x3conect.com.mycampus365;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -43,7 +44,7 @@ public class Attendance extends AppCompatActivity {
     String testval;
     JSONArray jArray;
     JSONObject json_data;
-
+    ProgressDialog pd;
     List<DataFish> filterdata=new ArrayList<>();
 
     private AdapterFish mAdapter;
@@ -60,7 +61,9 @@ public class Attendance extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
       //  getActionBar().setDisplayHomeAsUpEnabled(true);
-
+        pd = new ProgressDialog(Attendance.this);
+        pd.setMessage("Getting Data from Server...");
+        pd.show();
         new JsonAsync().execute("http://13.76.249.51:8080/school/webservices/attendance.php");
 
     }
@@ -111,7 +114,8 @@ public class Attendance extends AppCompatActivity {
         protected void onPostExecute(String result) {
 
             //this method will be running on UI thread
-
+            pd.dismiss();
+            pd.cancel();
             Log.e("result",result);
 
             //  pdLoading.dismiss();

@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     EditText Email,Pass;
     String strusr,strpass;
     SharedPreferences sp;
+    ProgressDialog pd;
     private Subscription internetConnectivitySubscription;
     // CONNECTION_TIMEOUT and READ_TIMEOUT are in milliseconds
     public static final int CONNECTION_TIMEOUT = 10000;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         strusr = Email.getText().toString();
         strpass = Pass.getText().toString();
         sp=getSharedPreferences("login",MODE_PRIVATE);
-        final ProgressDialog pd = new ProgressDialog(MainActivity.this);
+         pd = new ProgressDialog(MainActivity.this);
         pd.setMessage("loading...");
         pd.show();
 
@@ -121,7 +122,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 new AsyncFetch().execute("http://13.76.249.51:8080/school/webservices/login.php?username="+Email.getText().toString()+"&password="+Pass.getText().toString());
                 //  Log.e("URL",urlfinal);
-
+                pd = new ProgressDialog(MainActivity.this);
+                pd.setMessage("Signing in...");
+                pd.show();
             }
         });
 
@@ -172,6 +175,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
            // pdLoading.dismiss();
+
+            pd.dismiss();
+            pd.cancel();
             try {
                 JSONObject reader = new JSONObject(result);
                 String s = reader.getString("id");

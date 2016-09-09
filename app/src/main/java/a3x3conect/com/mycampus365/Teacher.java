@@ -1,5 +1,6 @@
 package a3x3conect.com.mycampus365;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
@@ -40,7 +41,7 @@ public class Teacher extends AppCompatActivity {
     String testval;
     JSONArray jArray;
     JSONObject json_data;
-
+    ProgressDialog pd;
     List<DataFish> filterdata=new ArrayList<>();
 
     private AdapterFish mAdapter;
@@ -55,7 +56,9 @@ public class Teacher extends AppCompatActivity {
             getSupportActionBar().setIcon(R.drawable.teachrsmal);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
+        pd = new ProgressDialog(Teacher.this);
+        pd.setMessage("Getting Data from Server...");
+        pd.show();
         new JsonAsync().execute("http://13.76.249.51:8080/school/webservices/teacher.php");
 
     }
@@ -106,7 +109,8 @@ public class Teacher extends AppCompatActivity {
         protected void onPostExecute(String result) {
 
             //this method will be running on UI thread
-
+            pd.dismiss();
+            pd.cancel();
             Log.e("result",result);
 
             //  pdLoading.dismiss();

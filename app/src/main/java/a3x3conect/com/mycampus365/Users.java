@@ -1,5 +1,6 @@
 package a3x3conect.com.mycampus365;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -46,6 +47,7 @@ public class Users extends AppCompatActivity {
     JSONArray jArray;
     JSONObject json_data;
     Spinner spinner;
+    ProgressDialog pd;
     List<DataFish> data=new ArrayList<>();
     List<DataFish> filterdata=new ArrayList<>();
     List<DataFish> spinnerdata=new ArrayList<>();
@@ -85,7 +87,9 @@ public class Users extends AppCompatActivity {
 
         // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
-
+        pd = new ProgressDialog(Users.this);
+        pd.setMessage("Getting Data from Server...");
+        pd.show();
         new JsonAsync().execute("http://13.76.249.51:8080/school/webservices/user.php");
 
     }
@@ -138,7 +142,8 @@ public class Users extends AppCompatActivity {
 
             testval =result;
 
-
+            pd.dismiss();
+            pd.cancel();
             //this method will be running on UI thread
 
             Log.e("result",result);
@@ -274,7 +279,7 @@ public class Users extends AppCompatActivity {
                 ((TextView) adapterView.getChildAt(0)).setTextSize(20);
                 String s = spinner.getSelectedItem().toString();
                 if (s.equalsIgnoreCase("Select Category")){
-                    Toast.makeText(Users.this, "Do Nothing", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(Users.this, "Do Nothing", Toast.LENGTH_SHORT).show();
                 }
                 if (s.equalsIgnoreCase("Administrator")){
                     spinnerdata.clear();

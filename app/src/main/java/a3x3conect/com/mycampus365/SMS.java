@@ -1,5 +1,6 @@
 package a3x3conect.com.mycampus365;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -46,6 +47,7 @@ public class SMS extends AppCompatActivity {
     JSONArray jArray;
     JSONObject json_data;
     Spinner spinner;
+    ProgressDialog pd;
     ListView myList;
     Button getChoice;
     String[] names;
@@ -64,7 +66,7 @@ public class SMS extends AppCompatActivity {
         }
         spinner = (Spinner)findViewById(R.id.spinner);
 
-
+        onitemselect();
         // Spinner click listener
 //        spinner.setOnItemSelectedListener(Users.this);
 
@@ -86,6 +88,9 @@ public class SMS extends AppCompatActivity {
         // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
 
+        pd = new ProgressDialog(SMS.this);
+        pd.setMessage("Getting Data from Server...");
+        pd.show();
         new JsonAsync().execute("http://13.76.249.51:8080/school/webservices/user.php");
 
     }
@@ -94,6 +99,8 @@ public class SMS extends AppCompatActivity {
 
 
     public class JsonAsync extends AsyncTask<String,String,String> {
+
+
         @Override
         protected String doInBackground(String... params) {
             HttpURLConnection connection = null;
@@ -137,8 +144,8 @@ public class SMS extends AppCompatActivity {
         protected void onPostExecute(String result) {
 
             testval =result;
-
-            onitemselect();
+            pd.dismiss();
+            pd.cancel();
 
             Log.e("result",result);
 
@@ -156,7 +163,7 @@ public class SMS extends AppCompatActivity {
                 ((TextView) adapterView.getChildAt(0)).setTextSize(20);
                 String s = spinner.getSelectedItem().toString();
                 if (s.equalsIgnoreCase("Select Category")){
-                    Toast.makeText(SMS.this, "Do Nothing", Toast.LENGTH_SHORT).show();
+
                 }
                 if (s.equalsIgnoreCase("Administrator")){
 
@@ -356,7 +363,7 @@ adapter = new ArrayAdapter<String>(SMS.this,
                     startActivity(intent);
                 }
                 else {
-                    Toast.makeText(SMS.this, "Please Select Rec", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SMS.this, "Please Select Receipient", Toast.LENGTH_SHORT).show();
                 }
             }
         });

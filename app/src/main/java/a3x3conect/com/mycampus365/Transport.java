@@ -2,6 +2,7 @@ package a3x3conect.com.mycampus365;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 public class Transport extends AppCompatActivity {
 
@@ -10,5 +11,24 @@ public class Transport extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transport);
         getSupportActionBar().setTitle("Transport");
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            //  getSupportActionBar().setIcon(R.drawable.book);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,5 +1,6 @@
 package a3x3conect.com.mycampus365;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
@@ -43,7 +44,7 @@ public class Librar extends AppCompatActivity {
     String testval;
     JSONArray jArray;
     JSONObject json_data;
-
+    ProgressDialog pd;
     List<DataFish> filterdata=new ArrayList<>();
 
     private AdapterFish mAdapter;
@@ -58,6 +59,9 @@ public class Librar extends AppCompatActivity {
             getSupportActionBar().setIcon(R.drawable.book);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+        pd = new ProgressDialog(Librar.this);
+        pd.setMessage("Getting Data from Server...");
+        pd.show();
         new JsonAsync().execute("http://13.76.249.51:8080/school/webservices/library.php");
 
     }
@@ -110,7 +114,8 @@ public class Librar extends AppCompatActivity {
             //this method will be running on UI thread
 
             Log.e("result",result);
-
+            pd.dismiss();
+            pd.cancel();
             //  pdLoading.dismiss();
             List<DataFish> data=new ArrayList<>();
 
