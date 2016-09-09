@@ -48,8 +48,8 @@
         android:layout_height="wrap_content"
         android:text="Send SMS"
         android:id="@+id/button"
-        android:layout_below="@+id/view"
-        android:layout_alignRight="@+id/rec"
-        android:layout_alignEnd="@+id/rec" />
+        android:layout_alignBottom="@+id/view"
+        android:layout_alignLeft="@+id/rec"
+        android:layout_alignStart="@+id/rec" />
 
 </RelativeLayout>

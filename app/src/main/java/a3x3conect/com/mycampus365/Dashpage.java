@@ -31,6 +31,8 @@ public class Dashpage extends AppCompatActivity {
         sms = (Button)findViewById(R.id.sms);
         survey = (Button)findViewById(R.id.survey);
         transport = (Button)findViewById(R.id.transport);
+        logout = (Button)findViewById(R.id.logout);
+
 
 
         getSupportActionBar().setTitle("Planner");
@@ -116,6 +118,19 @@ public class Dashpage extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Dashpage.this,Transport.class);
                 startActivity(intent);
+
+            }
+        });
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
+                SharedPreferences.Editor e=sp.edit();
+                e.clear();
+                e.commit();
+                Intent intent = new Intent(Dashpage.this,MainActivity.class);
+                startActivity(intent);
+                finish();
 
             }
         });
