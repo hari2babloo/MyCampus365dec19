@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         sp=getSharedPreferences("login",MODE_PRIVATE);
          pd = new ProgressDialog(MainActivity.this);
         pd.setMessage("loading...");
+        pd.setCancelable(false);
         pd.show();
 
 
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                             String pass = sp.getString("name",null);
                             pd.dismiss();
                             if(pass != null && !pass.isEmpty()){
+                                Toast.makeText(MainActivity.this, "Welcome Back..", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(MainActivity.this,Dashpage.class));
                                 finish();   //finish current activity
                             }
@@ -91,30 +93,16 @@ public class MainActivity extends AppCompatActivity {
                                 loginCheck();
                             }
 
-
-
-
-
-
-                        } else
-
-                        {
-                            Snackbar.make(findViewById(R.id.root),"Internet is Available", Snackbar.LENGTH_LONG)
-                                    .show();
-
                         }
 
-
                     }
+
+
                 });
 
     }
 
     private void loginCheck() {
-
-
-        Snackbar.make(findViewById(R.id.root),"Internet is Available", Snackbar.LENGTH_LONG)
-                .show();
 
         ImageButton login = (ImageButton)findViewById(R.id.login);
         login.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
                 //  Log.e("URL",urlfinal);
                 pd = new ProgressDialog(MainActivity.this);
                 pd.setMessage("Signing in...");
+                pd.setCancelable(false);
+               // pd.setCanceleable(false);
                 pd.show();
             }
         });

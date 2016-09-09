@@ -227,7 +227,8 @@ public class Users extends AppCompatActivity {
                         DataFish fishData = new DataFish();
                         // fishData.dob = json_data.getString("dob");
                         String s = json_data1.getString("prefferredName").toLowerCase();
-                        if (s.contains(query)) {
+                        String d = json_data1.getString("username").toLowerCase();
+                        if (s.contains(query)||d.contains(query)) {
                             fishData.email = json_data1.getString("email");
                             // fishData.Id=json_data.getString("Id");
                             fishData.phone = json_data1.getString("phone");

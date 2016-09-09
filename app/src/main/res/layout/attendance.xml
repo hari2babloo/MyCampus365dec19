@@ -19,7 +19,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search By Name"
+            android:hint="Search By Name/Roll Group"
             android:textColor="#0078d7"
             android:id="@+id/search"
             android:textColorHint="#0078d7"

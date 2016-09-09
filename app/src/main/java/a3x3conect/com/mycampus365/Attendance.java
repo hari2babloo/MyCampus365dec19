@@ -179,8 +179,9 @@ public class Attendance extends AppCompatActivity {
                         json_data = jArray.getJSONObject(i);
                         String s  = json_data.getString("preferredName").toLowerCase();
                         String d = json_data.getString("surname").toLowerCase();
+                        String m = json_data.getString("rollGroup").toLowerCase();
                         DataFish fishData = new DataFish();
-                        if (s.contains(query)||d.contains(query)){
+                        if (s.contains(query)||d.contains(query)||m.contains(query)){
                             fishData.preferredName = json_data.getString("preferredName");
                             fishData.presentCount = json_data.getString("presentCount");
                             fishData.rollGroup = json_data.getString("rollGroup");
