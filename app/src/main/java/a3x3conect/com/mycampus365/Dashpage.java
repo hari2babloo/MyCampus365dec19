@@ -1,10 +1,16 @@
 package a3x3conect.com.mycampus365;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class Dashpage extends AppCompatActivity {
 
@@ -15,12 +21,21 @@ public class Dashpage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashpage);
+
         atendance = (Button)findViewById(R.id.atendance);
         planner = (Button)findViewById(R.id.planner);
         teacher = (Button)findViewById(R.id.teacher);
         library = (Button)findViewById(R.id.library);
         users = (Button)findViewById(R.id.users);
         courses = (Button)findViewById(R.id.courses);
+        getSupportActionBar().setTitle("Planner");
+        SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
+
+       String id = sp.getString("id",null);
+        String pass = sp.getString("name",null);
+
+        getSupportActionBar().setTitle("Welcome "+pass );
+
 
         atendance.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +93,38 @@ public class Dashpage extends AppCompatActivity {
 
 
 
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.men, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.Logoff:
+                SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
+                SharedPreferences.Editor e=sp.edit();
+                e.clear();
+                e.commit();
+                Intent intent = new Intent(Dashpage.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+
+        }
+
+        return true;
+    }
+
+    public void onBackPressed() {
+        //  super.onBackPressed();
+        moveTaskToBack(true);
 
     }
 }

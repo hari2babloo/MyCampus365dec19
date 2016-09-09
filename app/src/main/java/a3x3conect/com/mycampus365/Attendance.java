@@ -1,6 +1,8 @@
 package a3x3conect.com.mycampus365;
 
+import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -48,6 +52,14 @@ public class Attendance extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attendance);
         search = (EditText) findViewById( R.id.search);
+        getSupportActionBar().setTitle("Attendance");
+
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setIcon(R.drawable.atndncsmal);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+      //  getActionBar().setDisplayHomeAsUpEnabled(true);
 
         new JsonAsync().execute("http://13.76.249.51:8080/school/webservices/attendance.php");
 
@@ -253,7 +265,6 @@ public class Attendance extends AppCompatActivity {
             myHolder.three.setText("RollGroup: " +current.rollGroup);
             myHolder.four.setText("Present Count: " +current.presentCount);
           //  myHolder.textPrice.setText("Rs. " + current.Title + "\\Kg");
-            myHolder.four.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
 
             // load image into imageview using glide
 //            Glide.with(context).load("http://192.168.1.7/test/images/" + current.fishImage)
@@ -277,6 +288,12 @@ public class Attendance extends AppCompatActivity {
             TextView two;
             TextView three;
             TextView four;
+            TextView five;
+            TextView six;
+            TextView seven;
+            TextView eight;
+            TextView nine;
+            TextView ten;
 
             // create constructor to get widget reference
             public MyHolder(View itemView) {
@@ -286,9 +303,39 @@ public class Attendance extends AppCompatActivity {
                 two = (TextView) itemView.findViewById(R.id.two);
                 three = (TextView) itemView.findViewById(R.id.three);
                 four = (TextView) itemView.findViewById(R.id.four);
+                five= (TextView) itemView.findViewById(R.id.five);
+                five.setVisibility(View.GONE);
+
+                six = (TextView) itemView.findViewById(R.id.six);
+                six.setVisibility(View.GONE);
+                seven = (TextView) itemView.findViewById(R.id.seven);
+                seven.setVisibility(View.GONE);
+                eight = (TextView) itemView.findViewById(R.id.eight);
+                eight.setVisibility(View.GONE);
+                nine = (TextView)itemView.findViewById(R.id.nine);
+                nine.setVisibility(View.GONE);
+                ten = (TextView)itemView.findViewById(R.id.ten);
+                ten.setVisibility(View.GONE);
             }
 
         }
 
+
+
+
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

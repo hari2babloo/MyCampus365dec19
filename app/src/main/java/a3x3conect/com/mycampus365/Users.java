@@ -2,6 +2,7 @@ package a3x3conect.com.mycampus365;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -52,6 +54,12 @@ public class Users extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.users);
+        getSupportActionBar().setTitle("Users");
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setIcon(R.drawable.usrsmal);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         search = (EditText) findViewById( R.id.search);
         spinner = (Spinner)findViewById(R.id.spinner);
         addTextListener();
@@ -261,6 +269,9 @@ public class Users extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+                ((TextView) adapterView.getChildAt(0)).setTextSize(20);
                 String s = spinner.getSelectedItem().toString();
                 if (s.equalsIgnoreCase("Select Category")){
                     Toast.makeText(Users.this, "Do Nothing", Toast.LENGTH_SHORT).show();
@@ -625,5 +636,19 @@ public class Users extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

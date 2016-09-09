@@ -12,6 +12,7 @@
     import android.text.TextWatcher;
     import android.util.Log;
     import android.view.LayoutInflater;
+    import android.view.MenuItem;
     import android.view.View;
     import android.view.ViewGroup;
     import android.widget.EditText;
@@ -48,8 +49,13 @@
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.planner);
+            getSupportActionBar().setTitle("Planner");
             search = (EditText) findViewById( R.id.search);
-
+            if(getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setIcon(R.drawable.plansmal);
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
+            }
             new JsonAsync().execute("http://13.76.249.51:8080/school/webservices/planner.php");
 
         }
@@ -151,70 +157,6 @@
             }
 
         }
-
-//        private void addTextListener() {
-//
-//            search.addTextChangedListener(new TextWatcher() {
-//                @Override
-//                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//                }
-//
-//                @Override
-//                public void onTextChanged(CharSequence query, int start, int before, int count) {
-//                    query = query.toString().toLowerCase();
-//                    mAdapter.notifyDataSetChanged();
-//
-//                    filterdata.clear();
-//
-//                    for(int i=0;i<jArray.length();i++) {
-//
-//                        try {
-//                            json_data = jArray.getJSONObject(i);
-//                            String s  = json_data.getString("preferredName").toLowerCase();
-//                            String d = json_data.getString("surname").toLowerCase();
-//                            DataFish fishData = new DataFish();
-//                            if (s.contains(query)||d.contains(query)){
-//                                fishData.preferredName = json_data.getString("preferredName");
-//                                fishData.presentCount = json_data.getString("presentCount");
-//                                fishData.rollGroup = json_data.getString("rollGroup");
-//                                fishData.surname = json_data.getString("surname");
-//                                filterdata.add(fishData);
-//
-//                            }
-//
-//
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//
-//                        // fishData.Id=json_data.getString("Id");
-//
-//                    }
-//                    // Setup and Handover data to recyclerview
-//                    mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
-//                    mAdapter = new AdapterFish(Planner.this, filterdata);
-//
-//                    mRVFishPrice.setAdapter(mAdapter);
-//                    mRVFishPrice.setLayoutManager(new LinearLayoutManager(Planner.this));
-//                    mAdapter.notifyDataSetChanged();
-//
-//                }
-//
-//
-//
-//
-//
-//
-//                @Override
-//                public void afterTextChanged(Editable editable) {
-//
-//                }
-//            });
-//
-//
-//        }
         public class DataFish {
 
             public String class1;
@@ -263,20 +205,20 @@
                 MyHolder myHolder= (MyHolder) holder;
                 DataFish current=data.get(position);
 
-                myHolder.one.setText("Course: " +current.course);
-                myHolder.two.setText("Class: " +current.class1);
+                myHolder.one.setText("Course : " +current.course);
+                myHolder.two.setText("Class : " +current.class1);
                // myHolder.two.setVisibility(View.GONE);
                 myHolder.three.setText("Date: " +current.date);
-                myHolder.four.setText("Time Start: " +current.timestart +"Time End"+current.timeend);
-                myHolder.five.setText("Name:   "+current.name1);
-                myHolder.six.setText("Summary:  "+current.Summary);
-                myHolder.seven.setText("Description:  "+ current.description);
-                myHolder.eight.setText("Teacher Notes"+ current.teachersNotes);
-                myHolder.nine.setText("Home Work:" + current.homework);
-                myHolder.ten.setText("Due Date: "+current.DueDate);
+                myHolder.four.setText("Time Start : " +current.timestart +"    Time End : "+current.timeend);
+                myHolder.five.setText("Name  :   "+current.name1);
+                myHolder.six.setText("Summary :  "+current.Summary);
+                myHolder.seven.setText("Description :   "+ current.description);
+                myHolder.eight.setText("Teacher Notes: "+ current.teachersNotes);
+                myHolder.nine.setText("Home Work :" + current.homework);
+                myHolder.ten.setText("Due Date : "+current.DueDate);
 
                 //  myHolder.textPrice.setText("Rs. " + current.Title + "\\Kg");
-                myHolder.four.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+//                myHolder.four.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
 
                 // load image into imageview using glide
 //            Glide.with(context).load("http://192.168.1.7/test/images/" + current.fishImage)
@@ -326,4 +268,19 @@
             }
 
         }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            // Handle action bar item clicks here. The action bar will
+            // automatically handle clicks on the Home/Up button, so long
+            // as you specify a parent activity in AndroidManifest.xml.
+            int id = item.getItemId();
+
+            if (id == android.R.id.home) {
+                finish();
+            }
+
+            return super.onOptionsItemSelected(item);
+        }
+
     }

@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -51,7 +52,12 @@ public class Librar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.librar);
         search = (EditText) findViewById( R.id.search);
-
+        getSupportActionBar().setTitle("Library");
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setIcon(R.drawable.book);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         new JsonAsync().execute("http://13.76.249.51:8080/school/webservices/library.php");
 
     }
@@ -256,7 +262,6 @@ public class Librar extends AppCompatActivity {
             myHolder.three.setText("Status: " +current.status);
            myHolder.four.setText("Image Link: " +current.pic);
             //  myHolder.textPrice.setText("Rs. " + current.Title + "\\Kg");
-            myHolder.four.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
 
             // load image into imageview using glide
           //  Glide.with(Librar.this).load(current.pic).into(myHolder.img);
@@ -279,6 +284,12 @@ public class Librar extends AppCompatActivity {
             TextView two;
             TextView three;
             TextView four;
+            TextView five;
+            TextView six;
+            TextView seven;
+            TextView eight;
+            TextView nine;
+            TextView ten;
 
             // create constructor to get widget reference
             public MyHolder(View itemView) {
@@ -288,9 +299,35 @@ public class Librar extends AppCompatActivity {
                 two = (TextView) itemView.findViewById(R.id.two);
                 three = (TextView) itemView.findViewById(R.id.three);
                 four = (TextView) itemView.findViewById(R.id.four);
+                five= (TextView) itemView.findViewById(R.id.five);
+
+                six = (TextView) itemView.findViewById(R.id.six);
+                seven = (TextView) itemView.findViewById(R.id.seven);
+                eight = (TextView) itemView.findViewById(R.id.eight);
+                nine = (TextView)itemView.findViewById(R.id.nine);
+                ten = (TextView)itemView.findViewById(R.id.ten);
+                five.setVisibility(View.GONE);
+                six.setVisibility(View.GONE);
+                seven.setVisibility(View.GONE);
+                eight.setVisibility(View.GONE);
+                nine.setVisibility(View.GONE);
+                ten.setVisibility(View.GONE);
             }
 
         }
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

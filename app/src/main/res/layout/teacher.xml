@@ -8,21 +8,22 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="a3x3conect.com.mycampus365.Teacher">
+    tools:context="a3x3conect.com.mycampus365.Teacher"
+    android:background="#b6b1b1">
     <com.github.florent37.materialtextfield.MaterialTextField
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        app:mtf_image="@drawable/book"
+        app:mtf_image="@drawable/teachrsmal"
         >
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search By Class/Course"
-            android:textColor="#333"
+            android:hint="Search By Name"
+            android:textColor="#0078d7"
             android:id="@+id/search"
-            android:textColorHint="#666"
-            android:textSize="15sp" />
+            android:textColorHint="#0078d7"
+            android:textSize="16dp" />
 
     </com.github.florent37.materialtextfield.MaterialTextField>
     <android.support.v7.widget.RecyclerView

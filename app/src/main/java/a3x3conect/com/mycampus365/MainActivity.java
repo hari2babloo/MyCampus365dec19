@@ -1,12 +1,18 @@
 package a3x3conect.com.mycampus365;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,6 +20,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.github.pwittchen.reactivenetwork.library.ReactiveNetwork;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,11 +36,17 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+
 public class MainActivity extends AppCompatActivity {
 
     EditText Email,Pass;
     String strusr,strpass;
-
+    SharedPreferences sp;
+    private Subscription internetConnectivitySubscription;
     // CONNECTION_TIMEOUT and READ_TIMEOUT are in milliseconds
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
@@ -40,25 +55,73 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Email = (EditText)findViewById(R.id.email);
-        Pass = (EditText)findViewById(R.id.pass);
+        Email = (EditText) findViewById(R.id.email);
+        Pass = (EditText) findViewById(R.id.pass);
         strusr = Email.getText().toString();
         strpass = Pass.getText().toString();
+        sp=getSharedPreferences("login",MODE_PRIVATE);
+        final ProgressDialog pd = new ProgressDialog(MainActivity.this);
+        pd.setMessage("loading...");
+        pd.show();
 
-      //  Toast.makeText(MainActivity.this, urlfinal, Toast.LENGTH_SHORT).show();
+
+//        if(sp.contains("id") && sp.contains("pass")){
+//            startActivity(new Intent(MainActivity.this,Dashpage.class));
+//              //finish current activity
+//        }
+
+        internetConnectivitySubscription = ReactiveNetwork.observeInternetConnectivity()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean isConnectedToInternet) {
+                        if ("true".equalsIgnoreCase(isConnectedToInternet.toString())) {
+                            String pass = sp.getString("name",null);
+                            pd.dismiss();
+                            if(pass != null && !pass.isEmpty()){
+                                startActivity(new Intent(MainActivity.this,Dashpage.class));
+                                finish();   //finish current activity
+                            }
+                            else {
+                                loginCheck();
+                            }
+
+
+
+
+
+
+                        } else
+
+                        {
+                            Snackbar.make(findViewById(R.id.root),"Internet is Available", Snackbar.LENGTH_LONG)
+                                    .show();
+
+                        }
+
+
+                    }
+                });
+
+    }
+
+    private void loginCheck() {
+
+
+        Snackbar.make(findViewById(R.id.root),"Internet is Available", Snackbar.LENGTH_LONG)
+                .show();
+
         ImageButton login = (ImageButton)findViewById(R.id.login);
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                    new AsyncFetch().execute("http://13.76.249.51:8080/school/webservices/login.php?username="+Email.getText().toString()+"&password="+Pass.getText().toString());
-              //  Log.e("URL",urlfinal);
+                new AsyncFetch().execute("http://13.76.249.51:8080/school/webservices/login.php?username="+Email.getText().toString()+"&password="+Pass.getText().toString());
+                //  Log.e("URL",urlfinal);
 
             }
         });
 
-        //Make call to AsyncTask
 
     }
 
@@ -109,9 +172,16 @@ public class MainActivity extends AppCompatActivity {
             try {
                 JSONObject reader = new JSONObject(result);
                 String s = reader.getString("id");
-//               String d = reader.getString("name");
-               Toast.makeText(MainActivity.this, s , Toast.LENGTH_SHORT).show();
+               String d = reader.getString("name");
+
+
+            //   Toast.makeText(MainActivity.this, s , Toast.LENGTH_SHORT).show();
                 if (s.equalsIgnoreCase("001")){
+
+                    SharedPreferences.Editor e=sp.edit();
+                    e.putString("id",s);
+                    e.putString("name",d);
+                    e.commit();
 
                     Intent intent = new Intent(MainActivity.this,Dashpage.class);
                     startActivity(intent);
@@ -119,7 +189,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(MainActivity.this, "Please Enter Valid Credentials", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(R.id.root),"Please Enter Valid Credentials   ", Snackbar.LENGTH_LONG)
+                            .show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -11,18 +11,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".Sample" />
         <activity android:name=".sample2" />
-        <activity android:name=".Attendance" />
+        <activity android:name=".Attendance" >
+
+        </activity>
         <activity android:name=".Librar" />
         <activity android:name=".Dashpage" />
         <activity android:name=".Planner">
+
 
         </activity>
         <activity android:name=".Teacher">
