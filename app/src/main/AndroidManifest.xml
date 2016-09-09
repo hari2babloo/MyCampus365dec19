@@ -11,34 +11,30 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity android:name=".Sample" />
         <activity android:name=".sample2" />
-        <activity android:name=".Attendance" >
-
-        </activity>
+        <activity android:name=".Attendance" />
         <activity android:name=".Librar" />
         <activity android:name=".Dashpage" />
-        <activity android:name=".Planner">
-
-
-        </activity>
-        <activity android:name=".Teacher">
-
-        </activity>
-        <activity android:name=".Users">
+        <activity android:name=".Planner" />
+        <activity android:name=".Teacher" />
+        <activity android:name=".Users" />
+        <activity android:name=".Courses" />
+        <activity android:name=".SMS">
 
         </activity>
-        <activity android:name=".Courses">
+        <activity android:name=".multiselecttest">
 
         </activity>
+        <activity android:name=".Sendsms" />
+        <activity android:name=".Survey" />
+        <activity android:name=".Transport"></activity>
     </application>
 
 </manifest>

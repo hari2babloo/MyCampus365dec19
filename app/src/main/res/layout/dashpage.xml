@@ -120,6 +120,67 @@
             android:layout_marginBottom="-5dp"
             android:layout_row="8"
             android:layout_column="1"/>
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/survey"
+            android:text="SURVEY"
+
+            android:textColor="#FFFFFF"
+            android:id="@+id/survey"
+            android:paddingTop="80dp"
+            android:drawablePadding="-15sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="-5dp"
+            android:layout_row="9"
+            android:layout_column="0"/>
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/sms"
+            android:text="SMS"
+
+            android:textColor="#FFFFFF"
+            android:id="@+id/sms"
+            android:paddingTop="80dp"
+            android:drawablePadding="-15sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="-5dp"
+            android:layout_row="9"
+            android:layout_column="1"/>
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/trans"
+            android:text="Transport"
+
+            android:textColor="#FFFFFF"
+            android:id="@+id/transport"
+            android:paddingTop="80dp"
+            android:drawablePadding="-15sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="-5dp"
+            android:layout_row="10"
+            android:layout_column="0"/>
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/logout"
+            android:text="LOG OUT"
+
+            android:textColor="#FFFFFF"
+            android:id="@+id/logout"
+            android:paddingTop="80dp"
+            android:drawablePadding="-15sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="-5dp"
+            android:layout_row="10"
+            android:layout_column="1"/>
 
     </GridLayout>
 </ScrollView>

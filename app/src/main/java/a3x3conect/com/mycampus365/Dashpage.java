@@ -15,7 +15,7 @@ import android.widget.Toast;
 public class Dashpage extends AppCompatActivity {
 
 
-    Button atendance,planner,teacher,library,users,courses;
+    Button atendance,planner,teacher,library,users,courses,sms,transport,survey,logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,11 @@ public class Dashpage extends AppCompatActivity {
         library = (Button)findViewById(R.id.library);
         users = (Button)findViewById(R.id.users);
         courses = (Button)findViewById(R.id.courses);
+        sms = (Button)findViewById(R.id.sms);
+        survey = (Button)findViewById(R.id.survey);
+        transport = (Button)findViewById(R.id.transport);
+
+
         getSupportActionBar().setTitle("Planner");
         SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
 
@@ -90,6 +95,33 @@ public class Dashpage extends AppCompatActivity {
 
             }
         });
+        sms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Dashpage.this,SMS.class);
+                startActivity(intent);
+
+            }
+        });
+        survey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Dashpage.this,Survey.class);
+                startActivity(intent);
+
+            }
+        });
+        transport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Dashpage.this,Transport.class);
+                startActivity(intent);
+
+            }
+        });
+
+
+
 
 
 
