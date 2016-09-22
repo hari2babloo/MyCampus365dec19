@@ -180,10 +180,10 @@ public class Sample extends AppCompatActivity {
             // Get current position of item in recyclerview to bind data and assign values from list
             MyHolder myHolder= (MyHolder) holder;
            DataFish current=data.get(position);
-            myHolder.textFishName.setText(current.BillAmount);
+            myHolder.textFishName.setText(current.Title);
             myHolder.textSize.setText("Size: " + current.RedeemedBy);
             myHolder.textType.setText("Category: " + current.RedeemedTime);
-            myHolder.textPrice.setText("Rs. " + current.Title + "\\Kg");
+            myHolder.textPrice.setText("Rs. " + current.Id + "\\Kg");
             myHolder.textPrice.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
 
             // load image into imageview using glide
