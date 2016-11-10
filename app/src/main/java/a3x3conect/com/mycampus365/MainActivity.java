@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         pd.show();
 
 
+
+
 //        if(sp.contains("id") && sp.contains("pass")){
 //            startActivity(new Intent(MainActivity.this,Dashpage.class));
 //              //finish current activity
@@ -82,17 +84,20 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void call(Boolean isConnectedToInternet) {
                         if ("true".equalsIgnoreCase(isConnectedToInternet.toString())) {
-                            String pass = sp.getString("name",null);
-                            pd.dismiss();
-                            if(pass != null && !pass.isEmpty()){
-                                Toast.makeText(MainActivity.this, "Welcome Back..", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(MainActivity.this,Dashpage.class));
-                                finish();   //finish current activity
-                            }
-                            else {
-                                loginCheck();
-                            }
 
+
+                        }
+
+                        else if ("false".equalsIgnoreCase(isConnectedToInternet.toString())){
+                            pd.dismiss();
+                            new AlertDialog.Builder(MainActivity.this).setIcon(R.drawable.logo).setTitle("MyCampus365")
+                                    .setMessage("Please Connect to Internet")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                }
+                            }).show();
                         }
 
                     }
@@ -100,23 +105,37 @@ public class MainActivity extends AppCompatActivity {
 
                 });
 
+        loginCheck();
+
     }
 
     private void loginCheck() {
 
-        ImageButton login = (ImageButton)findViewById(R.id.login);
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AsyncFetch().execute("http://13.76.249.51:8080/school/webservices/login.php?username="+Email.getText().toString()+"&password="+Pass.getText().toString());
-                //  Log.e("URL",urlfinal);
-                pd = new ProgressDialog(MainActivity.this);
-                pd.setMessage("Signing in...");
-                pd.setCancelable(false);
-               // pd.setCanceleable(false);
-                pd.show();
-            }
-        });
+
+        String pass = sp.getString("name",null);
+        pd.dismiss();
+        if(pass != null && !pass.isEmpty()){
+            Toast.makeText(MainActivity.this, "Welcome Back..", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(MainActivity.this,Dashpage.class));
+             //finish current activity
+        }
+        else {
+            ImageButton login = (ImageButton)findViewById(R.id.login);
+            login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new AsyncFetch().execute("http://13.76.249.51:8080/school/webservices/login.php?username="+Email.getText().toString()+"&password="+Pass.getText().toString());
+                    //  Log.e("URL",urlfinal);
+                    pd = new ProgressDialog(MainActivity.this);
+                    pd.setMessage("Signing in...");
+                    pd.setCancelable(false);
+                    // pd.setCanceleable(false);
+                    pd.show();
+                }
+            });
+        }
+
+
 
 
     }
