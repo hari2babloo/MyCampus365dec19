@@ -26,15 +26,15 @@
         <activity android:name=".Teacher" />
         <activity android:name=".Users" />
         <activity android:name=".Courses" />
-        <activity android:name=".SMS">
-
-        </activity>
-        <activity android:name=".multiselecttest">
-
-        </activity>
+        <activity android:name=".SMS" />
+        <activity android:name=".multiselecttest" />
         <activity android:name=".Sendsms" />
         <activity android:name=".Survey" />
-        <activity android:name=".Transport"></activity>
+        <activity android:name=".Transport" />
+        <activity android:name=".StudentDash" />
+        <activity android:name=".TeacherDash" />
+        <activity android:name=".ParentDash" />
+        <activity android:name=".SupportStaffDash"></activity>
     </application>
 
 </manifest>

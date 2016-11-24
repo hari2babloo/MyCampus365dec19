@@ -1,10 +1,10 @@
 package a3x3conect.com.mycampus365;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -15,13 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,13 +32,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class Courses extends AppCompatActivity {
-    private RecyclerView mRVFishPrice;
     EditText search;
-
-    private AdapterFish mAdapter;
     JSONArray jsonArray;
     ProgressDialog pd;
     List<DataFish> filterdata=new ArrayList<>();
+    private RecyclerView mRVFishPrice;
+    private AdapterFish mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,11 +54,84 @@ public class Courses extends AppCompatActivity {
         pd = new ProgressDialog(Courses.this);
         pd.setMessage("Getting Data from Server...");
         pd.show();
-        new JsonAsync().execute("http://13.76.249.51:8080/school/webservices/course.php");
+        new JsonAsync().execute("http://myschool365.com/welham/webservices/course.php");
 
     }
 
+    private void addTextListener() {
 
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence query, int start, int before, int count) {
+                query = query.toString().toLowerCase();
+                mAdapter.notifyDataSetChanged();
+
+                filterdata.clear();
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+
+                    try {
+                        JSONArray ss = jsonArray.getJSONArray(i);
+
+                        DataFish fishData = new DataFish();
+                        String s = ss.get(0).toString().toLowerCase();
+
+                        String d = ss.get(1).toString().toLowerCase();
+
+                        if (s.contains(query) || d.contains(query)) {
+                            fishData.classno = (String) ss.get(0);
+                            fishData.subjectname = (String) ss.get(1);
+                            filterdata.add(fishData);
+
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    // fishData.Id=json_data.getString("Id");
+
+                }
+                // Setup and Handover data to recyclerview
+                mRVFishPrice = (RecyclerView) findViewById(R.id.fishPriceList);
+                mAdapter = new AdapterFish(Courses.this, filterdata);
+
+                mRVFishPrice.setAdapter(mAdapter);
+                mRVFishPrice.setLayoutManager(new LinearLayoutManager(Courses.this));
+                mAdapter.notifyDataSetChanged();
+
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     public class JsonAsync extends AsyncTask<String,String,String> {
         @Override
@@ -103,7 +173,6 @@ public class Courses extends AppCompatActivity {
             }
             return null;
         }
-
         @Override
         protected void onPostExecute(String result) {
             pd.dismiss();
@@ -139,71 +208,6 @@ public class Courses extends AppCompatActivity {
 
 
     }
-    private void addTextListener() {
-
-        search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence query, int start, int before, int count) {
-                query = query.toString().toLowerCase();
-                mAdapter.notifyDataSetChanged();
-
-                filterdata.clear();
-
-                for(int i=0;i<jsonArray.length();i++) {
-
-                    try {
-                        JSONArray ss = jsonArray.getJSONArray(i);
-
-                        DataFish fishData = new DataFish();
-                        String s= ss.get(0).toString().toLowerCase();
-
-                        String d =ss.get(1).toString().toLowerCase();
-
-                        if (s.contains(query)||d.contains(query)){
-                            fishData.classno = (String) ss.get(0);
-                            fishData.subjectname = (String) ss.get(1);
-                            filterdata.add(fishData);
-
-                        }
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-
-                    // fishData.Id=json_data.getString("Id");
-
-                }
-                // Setup and Handover data to recyclerview
-                mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
-                mAdapter = new AdapterFish(Courses.this, filterdata);
-
-                mRVFishPrice.setAdapter(mAdapter);
-                mRVFishPrice.setLayoutManager(new LinearLayoutManager(Courses.this));
-                mAdapter.notifyDataSetChanged();
-
-            }
-
-
-
-
-
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-
-    }
-
 
     private class DataFish {
 
@@ -213,11 +217,11 @@ public class Courses extends AppCompatActivity {
 
     public class AdapterFish extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        private Context context;
-        private LayoutInflater inflater;
         List<DataFish> data= Collections.emptyList();
         DataFish current;
         int currentPos=0;
+        private Context context;
+        private LayoutInflater inflater;
 
         // create constructor to innitilize context and data sent from MainActivity
         public AdapterFish(Context context, List<DataFish> data){
@@ -306,19 +310,5 @@ public class Courses extends AppCompatActivity {
 
         }
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == android.R.id.home) {
-            finish();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

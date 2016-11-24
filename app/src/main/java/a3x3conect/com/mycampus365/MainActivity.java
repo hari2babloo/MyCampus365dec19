@@ -1,34 +1,24 @@
 package a3x3conect.com.mycampus365;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Handler;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.pwittchen.reactivenetwork.library.ReactiveNetwork;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,8 +26,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -46,14 +34,14 @@ import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
+    // CONNECTION_TIMEOUT and READ_TIMEOUT are in milliseconds
+    public static final int CONNECTION_TIMEOUT = 10000;
+    public static final int READ_TIMEOUT = 15000;
     EditText Email,Pass;
     String strusr,strpass;
     SharedPreferences sp;
     ProgressDialog pd;
     private Subscription internetConnectivitySubscription;
-    // CONNECTION_TIMEOUT and READ_TIMEOUT are in milliseconds
-    public static final int CONNECTION_TIMEOUT = 10000;
-    public static final int READ_TIMEOUT = 15000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,18 +101,53 @@ public class MainActivity extends AppCompatActivity {
 
 
         String pass = sp.getString("name",null);
+        String id = sp.getString("id", null);
         pd.dismiss();
-        if(pass != null && !pass.isEmpty()){
+        if (pass != null && !pass.isEmpty() && id.equalsIgnoreCase("002")) {
+
+
             Toast.makeText(MainActivity.this, "Welcome Back..", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(MainActivity.this,Dashpage.class));
+            startActivity(new Intent(MainActivity.this, TeacherDash.class));
              //finish current activity
+        }
+        if (pass != null && !pass.isEmpty() && id.equalsIgnoreCase("001")) {
+
+
+            Toast.makeText(MainActivity.this, "Welcome Back..", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(MainActivity.this, Dashpage.class));
+            //finish current activity
+        }
+        if (pass != null && !pass.isEmpty() && id.equalsIgnoreCase("003")) {
+
+
+            Toast.makeText(MainActivity.this, "Welcome Back..", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(MainActivity.this, StudentDash.class));
+            //finish current activity
+        }
+
+        if (pass != null && !pass.isEmpty() && id.equalsIgnoreCase("004")) {
+
+
+            Toast.makeText(MainActivity.this, "Welcome Back..", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(MainActivity.this, ParentDash.class));
+            //finish current activity
+        }
+
+        if (pass != null && !pass.isEmpty() && id.equalsIgnoreCase("006")) {
+
+
+            Toast.makeText(MainActivity.this, "Welcome Back..", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(MainActivity.this, SupportStaffDash.class));
+            //finish current activity
         }
         else {
             ImageButton login = (ImageButton)findViewById(R.id.login);
             login.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new AsyncFetch().execute("http://13.76.249.51:8080/school/webservices/login.php?username="+Email.getText().toString()+"&password="+Pass.getText().toString());
+                    new AsyncFetch().execute("http://myschool365.com/welham/webservices/login.php?username=" + Email.getText().toString() + "&password=" + Pass.getText().toString());
+
+                    // new AsyncFetch().execute("http://myschool365.com/welham/webservices/login.php?username=admsdsin&password=Welcome@123");
                     //  Log.e("URL",urlfinal);
                     pd = new ProgressDialog(MainActivity.this);
                     pd.setMessage("Signing in...");
@@ -138,6 +161,26 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    public void onBackPressed() {
+        new AlertDialog.Builder(this).setIcon(R.drawable.logo).setTitle("MyCampus365")
+                .setMessage("Do you want to Close the App?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        }).show();
     }
 
     public class AsyncFetch extends AsyncTask<String,String,String> {
@@ -188,6 +231,7 @@ public class MainActivity extends AppCompatActivity {
             pd.dismiss();
             pd.cancel();
             try {
+
                 JSONObject reader = new JSONObject(result);
                 String s = reader.getString("id");
                String d = reader.getString("name");
@@ -202,6 +246,42 @@ public class MainActivity extends AppCompatActivity {
                     e.commit();
 
                     Intent intent = new Intent(MainActivity.this,Dashpage.class);
+                    startActivity(intent);
+
+                } else if (s.equalsIgnoreCase("002")) {
+                    SharedPreferences.Editor e = sp.edit();
+                    e.putString("id", s);
+                    e.putString("name", d);
+                    e.commit();
+
+                    Intent intent = new Intent(MainActivity.this, TeacherDash.class);
+                    startActivity(intent);
+
+                } else if (s.equalsIgnoreCase("003")) {
+                    SharedPreferences.Editor e = sp.edit();
+                    e.putString("id", s);
+                    e.putString("name", d);
+                    e.commit();
+
+                    Intent intent = new Intent(MainActivity.this, StudentDash.class);
+                    startActivity(intent);
+
+                } else if (s.equalsIgnoreCase("004")) {
+                    SharedPreferences.Editor e = sp.edit();
+                    e.putString("id", s);
+                    e.putString("name", d);
+                    e.commit();
+
+                    Intent intent = new Intent(MainActivity.this, ParentDash.class);
+                    startActivity(intent);
+
+                } else if (s.equalsIgnoreCase("006")) {
+                    SharedPreferences.Editor e = sp.edit();
+                    e.putString("id", s);
+                    e.putString("name", d);
+                    e.commit();
+
+                    Intent intent = new Intent(MainActivity.this, SupportStaffDash.class);
                     startActivity(intent);
 
                 }
@@ -222,24 +302,5 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-    }
-    public void onBackPressed(){
-        new AlertDialog.Builder(this).setIcon(R.drawable.logo).setTitle("MyCampus365")
-                .setMessage("Do you want to Close the App?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                        intent.addCategory(Intent.CATEGORY_HOME);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        finish();
-                    }
-                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        }).show();
     }
 }

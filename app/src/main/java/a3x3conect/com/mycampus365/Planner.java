@@ -3,20 +3,16 @@
 
     import android.content.Context;
     import android.os.AsyncTask;
-    import android.support.v4.content.ContextCompat;
-    import android.support.v7.app.AppCompatActivity;
     import android.os.Bundle;
+    import android.support.v7.app.AppCompatActivity;
     import android.support.v7.widget.LinearLayoutManager;
     import android.support.v7.widget.RecyclerView;
-    import android.text.Editable;
-    import android.text.TextWatcher;
     import android.util.Log;
     import android.view.LayoutInflater;
     import android.view.MenuItem;
     import android.view.View;
     import android.view.ViewGroup;
     import android.widget.EditText;
-    import android.widget.ImageView;
     import android.widget.TextView;
     import android.widget.Toast;
 
@@ -36,14 +32,12 @@
     import java.util.List;
 
     public class Planner extends AppCompatActivity {
-        private RecyclerView mRVFishPrice;
         EditText search;
         String testval;
         JSONArray jArray;
         JSONObject json_data;
-
         List<DataFish> filterdata=new ArrayList<>();
-
+        private RecyclerView mRVFishPrice;
         private AdapterFish mAdapter;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +50,23 @@
                 getSupportActionBar().setIcon(R.drawable.plansmal);
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
             }
-            new JsonAsync().execute("http://13.76.249.51:8080/school/webservices/planner.php");
+            new JsonAsync().execute("http://183.82.106.77:8080/welham/webservices/planner.php");
 
         }
 
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            // Handle action bar item clicks here. The action bar will
+            // automatically handle clicks on the Home/Up button, so long
+            // as you specify a parent activity in AndroidManifest.xml.
+            int id = item.getItemId();
 
+            if (id == android.R.id.home) {
+                finish();
+            }
+
+            return super.onOptionsItemSelected(item);
+        }
 
         public class JsonAsync extends AsyncTask<String,String,String> {
             @Override
@@ -104,19 +110,11 @@
             }
             @Override
             protected void onPostExecute(String result) {
-
-                //this method will be running on UI thread
-
                 Log.e("result",result);
-
-                //  pdLoading.dismiss();
                 List<DataFish> data=new ArrayList<>();
 
-                //  pdLoading.dismiss();
                 try {
-
                     jArray = new JSONArray(result);
-
                     // Extract data from json and store into ArrayList as class objects
                     for(int i=0;i<jArray.length();i++){
                         //   JSONArray jsonObject = sys.getJSONArray(i);
@@ -139,7 +137,6 @@
                         fishData.homework= json_data.getString("homework");
                         fishData.description = json_data.getString("description");
                         data.add(fishData);
-
                     }
 
                     // Setup and Handover data to recyclerview
@@ -157,6 +154,7 @@
             }
 
         }
+
         public class DataFish {
 
             public String class1;
@@ -174,11 +172,11 @@
 
         public class AdapterFish extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-            private Context context;
-            private LayoutInflater inflater;
             List<DataFish> data= Collections.emptyList();
             DataFish current;
             int currentPos=0;
+            private Context context;
+            private LayoutInflater inflater;
 
             // create constructor to innitilize context and data sent from MainActivity
             public AdapterFish(Context context, List<DataFish> data){
@@ -267,20 +265,6 @@
 
             }
 
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            // Handle action bar item clicks here. The action bar will
-            // automatically handle clicks on the Home/Up button, so long
-            // as you specify a parent activity in AndroidManifest.xml.
-            int id = item.getItemId();
-
-            if (id == android.R.id.home) {
-                finish();
-            }
-
-            return super.onOptionsItemSelected(item);
         }
 
     }

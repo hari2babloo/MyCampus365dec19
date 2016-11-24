@@ -2,12 +2,10 @@ package a3x3conect.com.mycampus365;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -41,7 +39,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class Users extends AppCompatActivity {
-    private RecyclerView mRVFishPrice;
     EditText search;
     String testval;
     JSONArray jArray;
@@ -51,6 +48,7 @@ public class Users extends AppCompatActivity {
     List<DataFish> data=new ArrayList<>();
     List<DataFish> filterdata=new ArrayList<>();
     List<DataFish> spinnerdata=new ArrayList<>();
+    private RecyclerView mRVFishPrice;
     private AdapterFish mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,110 +88,9 @@ public class Users extends AppCompatActivity {
         pd = new ProgressDialog(Users.this);
         pd.setMessage("Getting Data from Server...");
         pd.show();
-        new JsonAsync().execute("http://13.76.249.51:8080/school/webservices/user.php");
+        new JsonAsync().execute("http://183.82.106.77:8080/welham/webservices/user.php");
 
     }
-
-
-
-
-    public class JsonAsync extends AsyncTask<String,String,String> {
-        @Override
-        protected String doInBackground(String... params) {
-            HttpURLConnection connection = null;
-            BufferedReader reader = null;
-            try {
-                URL url = new URL(params[0]);
-                connection = (HttpURLConnection)url.openConnection();
-                connection.connect();
-                InputStream stream = connection.getInputStream();
-                reader = new BufferedReader(new InputStreamReader(stream));
-                StringBuffer buffer = new StringBuffer();
-                String line= " ";
-                while ((line=reader.readLine())!=null){
-                    buffer.append(line);
-                }
-
-                return  buffer.toString();
-                //
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection!=null){
-                    connection.disconnect();
-                }
-
-                try {
-                    if (reader!=null){
-                        reader.close();
-
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(String result) {
-
-            testval =result;
-
-            pd.dismiss();
-            pd.cancel();
-            //this method will be running on UI thread
-
-            Log.e("result",result);
-
-            //  pdLoading.dismiss();
-
-
-            //  pdLoading.dismiss();
-            try {
-
-                jArray = new JSONArray(result);
-
-                // Extract data from json and store into ArrayList as class objects
-                for(int i=0;i<jArray.length();i++){
-
-
-                    //   JSONArray jsonObject = sys.getJSONArray(i);
-                    json_data = jArray.getJSONObject(i);
-//                    // Log.e("json",json_data.toString());
-                    DataFish fishData = new DataFish();
-                    fishData.dob = json_data.getString("dob");
-//                    Log.e("prefname",fishData.course);
-                    fishData.email=json_data.getString("email");
-                    // fishData.Id=json_data.getString("Id");
-                    fishData.phone=json_data.getString("phone");
-                    fishData.prefferredName= json_data.getString("prefferredName");
-                    fishData.Role = json_data.getString("Role");
-                    fishData.username = json_data.getString("username");
-
-                    data.add(fishData);
-
-                }
-
-                // Setup and Handover data to recyclerview
-                mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
-                mAdapter = new AdapterFish(Users.this, data);
-                //   Log.e("data",data.toString());
-                mRVFishPrice.setAdapter(mAdapter);
-                mRVFishPrice.setLayoutManager(new LinearLayoutManager(Users.this));
-
-
-            } catch (JSONException e) {
-                Toast.makeText(Users.this, e.toString(), Toast.LENGTH_LONG).show();
-            }
-
-        }
-
-    }
-
-
 
     private void addTextListener() {
 
@@ -530,6 +427,118 @@ public class Users extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public class JsonAsync extends AsyncTask<String, String, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+            try {
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+                InputStream stream = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(stream));
+                StringBuffer buffer = new StringBuffer();
+                String line = " ";
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                }
+
+                return buffer.toString();
+                //
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+
+                try {
+                    if (reader != null) {
+                        reader.close();
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            testval = result;
+
+            pd.dismiss();
+            pd.cancel();
+            //this method will be running on UI thread
+
+            Log.e("result", result);
+
+            //  pdLoading.dismiss();
+
+
+            //  pdLoading.dismiss();
+            try {
+
+                jArray = new JSONArray(result);
+
+                // Extract data from json and store into ArrayList as class objects
+                for (int i = 0; i < jArray.length(); i++) {
+
+
+                    //   JSONArray jsonObject = sys.getJSONArray(i);
+                    json_data = jArray.getJSONObject(i);
+                    Log.e("json", json_data.toString());
+                    DataFish fishData = new DataFish();
+                    fishData.dob = json_data.getString("dob");
+//                    Log.e("prefname",fishData.course);
+                    fishData.email = json_data.getString("email");
+                    // fishData.Id=json_data.getString("Id");
+                    fishData.phone = json_data.getString("phone");
+                    fishData.prefferredName = json_data.getString("prefferredName");
+                    fishData.Role = json_data.getString("Role");
+                    fishData.username = json_data.getString("username");
+
+                    data.add(fishData);
+
+                }
+
+                // Setup and Handover data to recyclerview
+                mRVFishPrice = (RecyclerView) findViewById(R.id.fishPriceList);
+                mAdapter = new AdapterFish(Users.this, data);
+                //   Log.e("data",data.toString());
+                mRVFishPrice.setAdapter(mAdapter);
+                mRVFishPrice.setLayoutManager(new LinearLayoutManager(Users.this));
+
+
+            } catch (JSONException e) {
+                Toast.makeText(Users.this, e.toString(), Toast.LENGTH_LONG).show();
+            }
+
+        }
+
+    }
+
     public class DataFish{
 
         public String dob;
@@ -544,11 +553,11 @@ public class Users extends AppCompatActivity {
 
     public class AdapterFish extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        private Context context;
-        private LayoutInflater inflater;
         List<DataFish> data= Collections.emptyList();
         DataFish current;
         int currentPos=0;
+        private Context context;
+        private LayoutInflater inflater;
 
         // create constructor to innitilize context and data sent from MainActivity
         public AdapterFish(Context context, List<DataFish> data){
@@ -580,7 +589,7 @@ public class Users extends AppCompatActivity {
             // myHolder.two.setVisibility(View.GONE);
             myHolder.three.setText("Gender: " +current.gender);
 
-            myHolder.four.setText("Email: " +current.email +"Phone:  "+current.phone);
+            myHolder.four.setText("Email: " + current.email + " \n Phone:  " + current.phone);
             myHolder.five.setVisibility(View.GONE);
             myHolder.six.setVisibility(View.GONE);
             myHolder.seven.setVisibility(View.GONE);
@@ -642,19 +651,5 @@ public class Users extends AppCompatActivity {
 
         }
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == android.R.id.home) {
-            finish();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

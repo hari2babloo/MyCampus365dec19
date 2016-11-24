@@ -1,24 +1,20 @@
 package a3x3conect.com.mycampus365;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseBooleanArray;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -36,11 +32,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class SMS extends AppCompatActivity {
-    private RecyclerView mRVFishPrice;
     EditText search;
     ListViewAdapter listviewadapter;
     String testval;
@@ -54,6 +48,8 @@ public class SMS extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     List<String> ls = new ArrayList<>();
     List<String> ms = new ArrayList<>();
+    private RecyclerView mRVFishPrice;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,66 +87,7 @@ public class SMS extends AppCompatActivity {
         pd = new ProgressDialog(SMS.this);
         pd.setMessage("Getting Data from Server...");
         pd.show();
-        new JsonAsync().execute("http://13.76.249.51:8080/school/webservices/user.php");
-
-    }
-
-
-
-
-    public class JsonAsync extends AsyncTask<String,String,String> {
-
-
-        @Override
-        protected String doInBackground(String... params) {
-            HttpURLConnection connection = null;
-            BufferedReader reader = null;
-            try {
-                URL url = new URL(params[0]);
-                connection = (HttpURLConnection)url.openConnection();
-                connection.connect();
-                InputStream stream = connection.getInputStream();
-                reader = new BufferedReader(new InputStreamReader(stream));
-                StringBuffer buffer = new StringBuffer();
-                String line= " ";
-                while ((line=reader.readLine())!=null){
-                    buffer.append(line);
-                }
-
-                return  buffer.toString();
-                //
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection!=null){
-                    connection.disconnect();
-                }
-
-                try {
-                    if (reader!=null){
-                        reader.close();
-
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(String result) {
-
-            testval =result;
-            pd.dismiss();
-            pd.cancel();
-
-            Log.e("result",result);
-
-
-        }
+        new JsonAsync().execute("http://183.82.106.77:8080/welham/webservices/user.php");
 
     }
 
@@ -386,5 +323,62 @@ adapter = new ArrayAdapter<String>(SMS.this,
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public class JsonAsync extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+            try {
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+                InputStream stream = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(stream));
+                StringBuffer buffer = new StringBuffer();
+                String line = " ";
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                }
+
+                return buffer.toString();
+                //
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+
+                try {
+                    if (reader != null) {
+                        reader.close();
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            testval = result;
+            pd.dismiss();
+            pd.cancel();
+
+            Log.e("result", result);
+
+
+        }
+
     }
 }

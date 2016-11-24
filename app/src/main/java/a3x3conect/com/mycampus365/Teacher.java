@@ -3,14 +3,12 @@ package a3x3conect.com.mycampus365;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,14 +34,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class Teacher extends AppCompatActivity {
-    private RecyclerView mRVFishPrice;
     EditText search;
     String testval;
     JSONArray jArray;
     JSONObject json_data;
     ProgressDialog pd;
     List<DataFish> filterdata=new ArrayList<>();
-
+    private RecyclerView mRVFishPrice;
     private AdapterFish mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +56,89 @@ public class Teacher extends AppCompatActivity {
         pd = new ProgressDialog(Teacher.this);
         pd.setMessage("Getting Data from Server...");
         pd.show();
-        new JsonAsync().execute("http://13.76.249.51:8080/school/webservices/teacher.php");
+        new JsonAsync().execute("http://183.82.106.77:8080/welham/webservices/teacher.php");
 
     }
 
+    private void addTextListener() {
 
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence query, int start, int before, int count) {
+                query = query.toString().toLowerCase();
+                mAdapter.notifyDataSetChanged();
+
+                filterdata.clear();
+
+                for (int i = 0; i < jArray.length(); i++) {
+
+                    try {
+
+                        json_data = jArray.getJSONObject(i);
+                        String s = json_data.getString("surname").toLowerCase();
+                        String d = json_data.getString("preferredName").toLowerCase();
+                        DataFish fishData = new DataFish();
+                        if (s.contains(query) || d.contains(query)) {
+                            fishData.preferredName = json_data.getString("preferredName");
+                            fishData.surname = json_data.getString("surname");
+                            fishData.dob = json_data.getString("dob");
+                            fishData.email = json_data.getString("email");
+                            fishData.phone1 = json_data.getString("phone1");
+                            fishData.phone2 = json_data.getString("phone2");
+                            fishData.address1 = json_data.getString("address1");
+                            fishData.address1District = json_data.getString("address1District");
+                            fishData.address1Country = json_data.getString("address1Country");
+                            filterdata.add(fishData);
+
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    // fishData.Id=json_data.getString("Id");
+
+                }
+                // Setup and Handover data to recyclerview
+                mRVFishPrice = (RecyclerView) findViewById(R.id.fishPriceList);
+                mAdapter = new AdapterFish(Teacher.this, filterdata);
+
+                mRVFishPrice.setAdapter(mAdapter);
+                mRVFishPrice.setLayoutManager(new LinearLayoutManager(Teacher.this));
+                mAdapter.notifyDataSetChanged();
+
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     public class JsonAsync extends AsyncTask<String,String,String> {
         @Override
@@ -111,7 +186,7 @@ public class Teacher extends AppCompatActivity {
             //this method will be running on UI thread
             pd.dismiss();
             pd.cancel();
-            Log.e("result",result);
+//            Log.e("result",result);
 
             //  pdLoading.dismiss();
             List<DataFish> data=new ArrayList<>();
@@ -127,12 +202,19 @@ public class Teacher extends AppCompatActivity {
                     json_data = jArray.getJSONObject(i);
                    // Log.e("json",json_data.toString());
                     DataFish fishData = new DataFish();
-                    fishData.class1 = json_data.getString("class");
+//                    fishData.class1 = json_data.getString("class");
 //                    Log.e("prefname",fishData.course);
-                    fishData.course=json_data.getString("course");
+                    // fishData.course=json_data.getString("course");
                     // fishData.Id=json_data.getString("Id");
                     fishData.preferredName=json_data.getString("preferredName");
                     fishData.surname= json_data.getString("surname");
+                    fishData.dob = json_data.getString("dob");
+                    fishData.email = json_data.getString("email");
+                    fishData.phone1 = json_data.getString("phone1");
+                    fishData.phone2 = json_data.getString("phone2");
+                    fishData.address1 = json_data.getString("address1");
+                    fishData.address1District = json_data.getString("address1District");
+                    fishData.address1Country = json_data.getString("address1Country");
 
                     data.add(fishData);
 
@@ -154,86 +236,30 @@ public class Teacher extends AppCompatActivity {
 
     }
 
-            private void addTextListener() {
-
-            search.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence query, int start, int before, int count) {
-                    query = query.toString().toLowerCase();
-                    mAdapter.notifyDataSetChanged();
-
-                    filterdata.clear();
-
-                    for(int i=0;i<jArray.length();i++) {
-
-                        try {
-
-                            json_data = jArray.getJSONObject(i);
-                            String s  = json_data.getString("class").toLowerCase();
-                            String d = json_data.getString("course").toLowerCase();
-                            DataFish fishData = new DataFish();
-                            if (s.contains(query)||d.contains(query)){
-                                fishData.class1 = json_data.getString("class");
-                                fishData.course = json_data.getString("course");
-                                fishData.preferredName = json_data.getString("preferredName");
-                                fishData.surname = json_data.getString("surname");
-                                filterdata.add(fishData);
-
-                            }
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                        // fishData.Id=json_data.getString("Id");
-
-                    }
-                    // Setup and Handover data to recyclerview
-                    mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
-                    mAdapter = new AdapterFish(Teacher.this, filterdata);
-
-                    mRVFishPrice.setAdapter(mAdapter);
-                    mRVFishPrice.setLayoutManager(new LinearLayoutManager(Teacher.this));
-                    mAdapter.notifyDataSetChanged();
-
-                }
-
-
-
-
-
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-
-                }
-            });
-
-
-        }
     public class DataFish {
 
         public String class1;
         public String course;
         public String preferredName;
         public String surname;
+        public String email;
+        public String dob;
+        public String phone1;
+        public String phone2;
+        public String address1;
+        public String address1District;
+        public String address1Country;
+
 
     }
 
     public class AdapterFish extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        private Context context;
-        private LayoutInflater inflater;
         List<DataFish> data= Collections.emptyList();
         DataFish current;
         int currentPos=0;
+        private Context context;
+        private LayoutInflater inflater;
 
         // create constructor to innitilize context and data sent from MainActivity
         public AdapterFish(Context context, List<DataFish> data){
@@ -260,16 +286,15 @@ public class Teacher extends AppCompatActivity {
             MyHolder myHolder= (MyHolder) holder;
             DataFish current=data.get(position);
 
-            myHolder.one.setText("Class: " +current.class1);
-            myHolder.two.setText("Course: " +current.course);
+            myHolder.one.setText("Name: " + current.surname + " " + current.preferredName);
+            myHolder.two.setText("Email: " + current.email);
             // myHolder.two.setVisibility(View.GONE);
-            myHolder.three.setText("Date: " +current.preferredName);
-            myHolder.three.setVisibility(View.GONE);
-            myHolder.four.setText("Name: " +current.preferredName +"Time End"+current.surname);
-            myHolder.five.setVisibility(View.GONE);
-            myHolder.six.setVisibility(View.GONE);
-            myHolder.seven.setVisibility(View.GONE);
-            myHolder.eight.setVisibility(View.GONE);
+            myHolder.three.setText("DOB: " + current.dob);
+            myHolder.four.setText("Phone 1: " + current.phone1);
+            myHolder.five.setText("Phone 2: " + current.phone2);
+            myHolder.six.setText("Address1: " + current.address1);
+            myHolder.seven.setText("Address2: " + current.address1District);
+            myHolder.eight.setText("address1Country: " + current.address1Country);
             myHolder.nine.setVisibility(View.GONE);
             myHolder.ten.setVisibility(View.GONE);
 //            myHolder.imageView.setVisibility(View.INVISIBLE);
@@ -326,19 +351,5 @@ public class Teacher extends AppCompatActivity {
 
         }
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == android.R.id.home) {
-            finish();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }
