@@ -7,7 +7,7 @@
     android:layout_height="fill_parent"
     android:fillViewport="true"
     android:parentActivityName=".Dash   "
-    tools:context=".Dashpage">
+    tools:context="com.a3x3conect.welhamboys.Dashpage">
 
     <GridLayout
         android:id="@+id/GridLayout1"

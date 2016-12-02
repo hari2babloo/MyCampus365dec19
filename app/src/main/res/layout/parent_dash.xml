@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fillViewport="true"
-    tools:context="a3x3conect.com.mycampus365.ParentDash">
+    tools:context="a3x3conect.com.mycampus365.com.a3x3conect.welhamboys.ParentDash">
 
     <GridLayout
         android:id="@+id/GridLayout1"
